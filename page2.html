@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Página 2</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    #map {
+        height: 400px;
+        width: 100%;
+        margin: 20px auto;
+    }
+</style>
+</head>
+<body>
+<div>
+    <h2>Página 2</h2>
+    <div id="map"></div>
+    <p>Localização em tempo real:</p>
+    <p id="coordinates"></p>
+</div>
+
+<script>
+// Função para obter os parâmetros da URL
+function getParams() {
+    const params = {};
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    params.lat = parseFloat(urlParams.get('lat')) || null;
+    params.lon = parseFloat(urlParams.get('lon')) || null;
+    return params;
+}
+
+// Função para inicializar o mapa com a localização recebida
+function initMap() {
+    const params = getParams();
+    if (params.lat !== null && params.lon !== null) {
+        const location = { lat: params.lat, lng: params.lon };
+        const map = new google.maps.Map(document.getElementById("map"), {
+            center: location,
+            zoom: 15
+        });
+        const marker = new google.maps.Marker({
+            position: location,
+            map: map
+        });
+        document.getElementById("coordinates").innerText = `Latitude: ${params.lat}, Longitude: ${params.lon}`;
+    } else {
+        document.getElementById("map").innerText = "Nenhuma localização recebida.";
+    }
+}
+</script>
+<!-- Carregar o script do Google Maps API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMWLr2TDiNEMl11blVlZpQBYQ2e74ugAA&callback=initMap" async defer></script>
+</body>
+</html>
